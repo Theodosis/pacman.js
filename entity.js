@@ -3,6 +3,7 @@ function Entity( position ){
     this.icon = new Image();
     this.icon.src = "http://www.google.com/logos/pacman10-hp-sprite-2.png";
     this.direction = "W";
+    this.nextMove = "W";
 }
 
 Entity.prototype = {
@@ -23,8 +24,10 @@ Entity.prototype = {
         if( this.collides( point ) ){
             return false;
         }
+        this.nextMove = direction;
         this.position = point;
-    }
+    },
+
 }
 
 function Pacman( position ){

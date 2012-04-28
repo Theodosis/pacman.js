@@ -19,9 +19,90 @@
         <script src="platform.js"></script>
         <script src="entity.js"></script>
         <script>
-            var platform = new Platform( 25, 30 );
+            var walls = [
+                // left wall
+                [ new Point( 0, 0 ), new Point( 0, 9 ) ],
+                [ new Point( 0, 9 ), new Point( 5, 9 ) ],
+                [ new Point( 5, 9 ), new Point( 5, 13 ) ],
+                [ new Point( 0, 13 ), new Point( 5, 13 ) ],
+                [ new Point( 0, 15 ), new Point( 5, 15 ) ],
+                [ new Point( 5, 15 ), new Point( 5, 19 ) ],
+                [ new Point( 0, 19 ), new Point( 5, 19 ) ],
+                [ new Point( 0, 19 ), new Point( 0, 30 ) ],
+
+                // top wall
+                [ new Point( 0, 0 ), new Point( 27, 0 ) ],
+                [ new Point( 13, 0 ), new Point( 14, 4 ) ],
+                
+                // right wall
+                [ new Point( 27, 0 ), new Point( 27, 9 ) ],
+                [ new Point( 22, 9 ), new Point( 27, 9 ) ],
+                [ new Point( 22, 9 ), new Point( 22, 13 ) ],
+                [ new Point( 22, 13 ), new Point( 27, 13 ) ],
+                [ new Point( 22, 15 ), new Point( 27, 15 ) ],
+                [ new Point( 22, 15 ), new Point( 22, 19 ) ],
+                [ new Point( 22, 19 ), new Point( 27, 19 ) ],
+                [ new Point( 27, 19 ), new Point( 27, 30 ) ],
+               
+                // bottom wall
+                [ new Point( 0, 30 ), new Point( 27, 30 ) ],
+
+                
+                // first row
+                [ new Point( 2, 2 ), new Point( 5, 4 ) ],
+                [ new Point( 7, 2 ), new Point( 11, 4 ) ],
+                [ new Point( 16, 2 ), new Point( 20, 4 ) ],
+                [ new Point( 22, 2 ), new Point( 25, 4 ) ],
+                
+                // second row
+                [ new Point( 2, 6 ), new Point( 5, 7 ) ],
+                [ new Point( 22, 6 ), new Point( 25, 7 ) ],
+                
+                
+                // Top triangles
+                [ new Point( 7, 6 ), new Point( 8, 13 ) ],
+                [ new Point( 9, 9 ), new Point( 11, 10 ) ],
+                [ new Point( 10, 6 ), new Point( 17, 7 ) ],
+                [ new Point( 13, 8 ), new Point( 14, 10 ) ],
+                [ new Point( 19, 6 ), new Point( 20, 13 ) ],
+                [ new Point( 16, 9 ), new Point( 18, 10 ) ],
+                
+                // middle verticals
+                [ new Point( 7, 15 ), new Point( 8, 19 ) ],
+                [ new Point( 19, 15 ), new Point( 20, 19 ) ],
+                
+                // center triangles
+                [ new Point( 10, 18 ), new Point( 17, 19 ) ],
+                [ new Point( 13, 20 ), new Point( 14, 22 ) ],
+                [ new Point( 10, 24 ), new Point( 17, 25 ) ],
+                [ new Point( 13, 26 ), new Point( 14, 28 ) ],
+                
+                // bottom left
+                [ new Point( 2, 21 ), new Point( 5, 22 ) ],
+                [ new Point( 4, 23 ), new Point( 5, 25 ) ],
+                [ new Point( 7, 21 ), new Point( 11, 22 ) ],
+                [ new Point( 1, 24 ), new Point( 2, 25 ) ],
+                [ new Point( 2, 27 ), new Point( 11, 28 ) ],
+                [ new Point( 7, 24 ), new Point( 8, 26 ) ],
+
+                // bottom right
+                [ new Point( 16, 21 ), new Point( 20, 22 ) ],
+                [ new Point( 22, 21 ), new Point( 25, 22 ) ],
+                [ new Point( 22, 23 ), new Point( 23, 25 ) ],
+                [ new Point( 25, 24 ), new Point( 26, 25 ) ],
+                [ new Point( 19, 24 ), new Point( 20, 27 ) ],
+                [ new Point( 16, 27 ), new Point( 25, 28 ) ],
+                
+                // Ghost Nest
+                [ new Point( 10, 12 ), new Point( 10, 16 ) ],
+                [ new Point( 10, 12 ), new Point( 12, 12 ) ],
+                [ new Point( 15, 12 ), new Point( 17, 12 ) ],
+                [ new Point( 17, 12 ), new Point( 17, 16 ) ],
+                [ new Point( 10, 16 ), new Point( 17, 16 ) ]
+            ];
+            var platform = new Platform( 28, 31, walls );
             
-            platform.addEntity( new Pacman( new Point( 12, 20 ) ) );
+            platform.addEntity( new Pacman( new Point( 13.5, 23 ) ) );
             
             //platform.addEntity( new Blinky( new Point( 28, 30 ) ) );
             //platform.addEntity( new Pinky( new Point( 29, 30 ) ) );
