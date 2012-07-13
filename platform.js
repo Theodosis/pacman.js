@@ -2,6 +2,7 @@ function Platform( columns, rows, walls ){
     this.columns = columns;
     this.rows = rows;
     this.walls = walls;
+    this.wallPoints = [];
     
     this.canvas = document.getElementById( 'canvas' );
     
@@ -14,6 +15,23 @@ function Platform( columns, rows, walls ){
     this.canvas.height = rows * this.step;
     
     this.ctx = this.canvas.getContext( '2d' );
+
+    this.TS = new Date().getTime();
+    this.datediff = new Date().getTime() - this.TS;
+    
+    
+    for( var i in this.walls ){
+        var wall = this.walls[ i ];
+        var from = wall[ 0 ];
+        var to = wall[ 1 ];
+        for( j = 0; j <= to.x - from.x; ++j ){
+            x = from.x + j;
+            for( k = 0; k <= to.y - from.y; ++k ){
+                y = from.y + k;
+                this.wallPoints.push( new Point( x, y ) );
+            }
+        }
+    }
 }
 Platform.prototype = {
     entities: [],
@@ -42,18 +60,11 @@ Platform.prototype = {
             this.ctx.stroke();
             this.ctx.closePath();
         }
-        for( var i in this.walls ){
-            var wall = this.walls[ i ];
-            var from = wall[ 0 ];
-            var to = wall[ 1 ];
-            this.ctx.fillStyle = "#499";
-            for( j = 0; j <= to.x - from.x; ++j ){
-                x = from.x + j;
-                for( k = 0; k <= to.y - from.y; ++k ){
-                    y = from.y + k;
-                    this.ctx.fillRect( x * this.step + 1, y * this.step + 1, this.step - 1, this.step - 1 );
-                }
-            }
+        this.ctx.fillStyle = "#499";
+        for( var i in this.wallPoints ){
+            var x = this.wallPoints[ i ].x;
+            var y = this.wallPoints[ i ].y;
+            this.ctx.fillRect( x * this.step + 1, y * this.step + 1, this.step - 1, this.step - 1 );
         }
     },
     drawFrame: function(){
@@ -64,6 +75,8 @@ Platform.prototype = {
         var that = this;
         requestAnimationFrame( function(){
             that.drawFrame.call( that );
+            that.datediff = new Date().getTime() - that.TS;
+            that.TS = new Date().getTime();
         } );
     },
     Initialize: function(){

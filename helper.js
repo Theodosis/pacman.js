@@ -69,6 +69,17 @@ Object.defineProperty( Function.prototype, "extend", {
 Object.defineProperty( Array.prototype, 'contains', {
     value: function( needle ){
         for( var i = 0; i < this.length; ++i ){
+            if( typeof needle == typeof this && typeof needle == 'object' ){
+                var exists = true;
+                for( j in needle ){
+                    if( needle[ j ] != this[ i ][ j ] ){
+                        exists = false;
+                    }
+                }
+                if( exists ){
+                    return true;
+                }
+            }
             if( needle == this[ i ] ){
                 return true;
             }
@@ -94,6 +105,19 @@ Point.prototype = {
     check: function( limit ){
         return  this.x >= 0 && this.x < limit.x &&
                 this.y >= 0 && this.y < limit.y;
+    },
+    round: function( e ){
+        var p = new Point( this.x, this.y );
+        if( Math.abs( this.x - Math.round( this.x ) ) < e ){
+            p.x = Math.round( this.x );
+        }
+        if( Math.abs( this.y - Math.round( this.y ) ) < e ){
+            p.y = Math.round( this.y );
+        }
+        return p;
+    },
+    toString: function(){
+        return "[ " + this.x + ", " + this.y + " ]";
     }
 };
 
@@ -104,3 +128,4 @@ Vector.prototype = {
     constructor: Vector
 }
 Vector.extend( Point );
+
