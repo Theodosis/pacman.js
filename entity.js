@@ -4,7 +4,7 @@ function Entity( position ){
     this.icon.src = "http://www.google.com/logos/pacman10-hp-sprite-2.png";
     this.direction = "";
     this.nextMove = "";
-    this.speed = 3.5; //steps / sec
+    this.speed = 6.5; //steps / sec
 }
 
 
@@ -49,17 +49,18 @@ Entity.prototype = {
         var g = this.position.scale( this.platform.step );
         var p = this.icon.spritePosition;
         var s = this.icon.size;
-        this.platform.ctx.drawImage( this.icon, p[0], p[1], s[0], s[1], g.x, g.y, platform.step, platform.step );
+        this.platform.bullets.remove( this.position.round( 0.5 ) );
+        this.platform.ctx.drawImage( this.icon, p[ 0 ], p[ 1 ], s[ 0 ], s[ 1 ], g.x, g.y, platform.step, platform.step );
     },
     collides: function( point ){
         return  point.y < 0 ||
                 point.y > this.platform.rows - 1 ||
                 point.x < 0 ||
                 point.x > this.platform.columns - 1 ||
-                this.platform.wallPoints.contains( new Point( Math.floor( point.x ), Math.floor( point.y ) ) ) ||
-                this.platform.wallPoints.contains( new Point( Math.floor( point.x ), Math.ceil( point.y ) ) ) ||
-                this.platform.wallPoints.contains( new Point( Math.ceil( point.x ), Math.floor( point.y ) ) ) ||
-                this.platform.wallPoints.contains( new Point( Math.ceil( point.x ), Math.ceil( point.y ) ) );
+                this.platform.walls.contains( new Point( Math.floor( point.x ), Math.floor( point.y ) ) ) ||
+                this.platform.walls.contains( new Point( Math.floor( point.x ), Math.ceil( point.y ) ) ) ||
+                this.platform.walls.contains( new Point( Math.ceil( point.x ), Math.floor( point.y ) ) ) ||
+                this.platform.walls.contains( new Point( Math.ceil( point.x ), Math.ceil( point.y ) ) );
     },
 }
 

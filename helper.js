@@ -87,6 +87,37 @@ Object.defineProperty( Array.prototype, 'contains', {
         return false;
     }
 } );
+Object.defineProperty( Array.prototype, 'position', {
+    value: function( needle ){
+        for( var i = 0; i < this.length; ++i ){
+            if( typeof needle == typeof this && typeof needle == 'object' ){
+                var exists = true;
+                for( j in needle ){
+                    if( needle[ j ] != this[ i ][ j ] ){
+                        exists = false;
+                    }
+                }
+                if( exists ){
+                    return i;
+                }
+            }
+            if( needle == this[ i ] ){
+                return i;
+            }
+        }
+        return -1;
+    }
+} );
+Object.defineProperty( Array.prototype, 'remove', {
+    value: function( needle ){
+        var pos = this.position( needle );
+        if( pos == -1 ){
+            return false;
+        }
+        this.splice( pos, 1 );
+        return true;
+    }
+} );
 
 function Point( x, y ){
     this.x = x;

@@ -1,8 +1,8 @@
-function Platform( columns, rows, walls ){
+function Platform( columns, rows ){
     this.columns = columns;
     this.rows = rows;
-    this.walls = walls;
-    this.wallPoints = [];
+    this.walls = levels.lvl1.walls;
+    this.bullets = levels.lvl1.bullets;
     
     this.canvas = document.getElementById( 'canvas' );
     
@@ -18,20 +18,6 @@ function Platform( columns, rows, walls ){
 
     this.TS = new Date().getTime();
     this.datediff = new Date().getTime() - this.TS;
-    
-    
-    for( var i in this.walls ){
-        var wall = this.walls[ i ];
-        var from = wall[ 0 ];
-        var to = wall[ 1 ];
-        for( j = 0; j <= to.x - from.x; ++j ){
-            x = from.x + j;
-            for( k = 0; k <= to.y - from.y; ++k ){
-                y = from.y + k;
-                this.wallPoints.push( new Point( x, y ) );
-            }
-        }
-    }
 }
 Platform.prototype = {
     entities: [],
@@ -61,10 +47,16 @@ Platform.prototype = {
             this.ctx.closePath();
         }
         this.ctx.fillStyle = "#499";
-        for( var i in this.wallPoints ){
-            var x = this.wallPoints[ i ].x;
-            var y = this.wallPoints[ i ].y;
+        for( var i in this.walls ){
+            var x = this.walls[ i ].x;
+            var y = this.walls[ i ].y;
             this.ctx.fillRect( x * this.step + 1, y * this.step + 1, this.step - 1, this.step - 1 );
+        }
+        this.ctx.fillStyle = "#fc0";
+        for( var i in this.bullets ){
+            var x = this.bullets[ i ].x;
+            var y = this.bullets[ i ].y;
+            this.ctx.fillRect( ( x + 0.5 ) * this.step - 1, ( y + 0.5 ) * this.step - 1, 2, 2 );
         }
     },
     drawFrame: function(){
