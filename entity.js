@@ -4,7 +4,7 @@ function Entity( position ){
     this.icon.src = "http://www.google.com/logos/pacman10-hp-sprite-2.png";
     this.direction = "";
     this.nextMove = "";
-    this.speed = 6.5; //steps / sec
+    this.speed = 3.5; //steps / sec
 }
 
 
@@ -34,7 +34,7 @@ Entity.prototype = {
                 this.DirectionToVector[ this.nextMove ]
             );
             if( !this.collides( testpos ) ){
-                this.position = this.position.round( 0.1 );
+                this.position = this.position.round( 0.3 );
                 this.direction = this.nextMove;
                 this.nextMove = '';
             }
@@ -42,7 +42,10 @@ Entity.prototype = {
         var newpos = this.position.add( 
             this.DirectionToVector[ this.direction ].scale( this.speed * this.platform.datediff / 1000 )
         );
-        if( !this.collides( newpos ) ){
+        if( this.collides( newpos ) ){
+            this.position = this.position.round( 0.5 );
+        }
+        else{
             this.position = newpos;
         }
 
@@ -53,10 +56,10 @@ Entity.prototype = {
         this.platform.ctx.drawImage( this.icon, p[ 0 ], p[ 1 ], s[ 0 ], s[ 1 ], g.x, g.y, platform.step, platform.step );
     },
     collides: function( point ){
-        return  point.y < 0 ||
-                point.y > this.platform.rows - 1 ||
-                point.x < 0 ||
-                point.x > this.platform.columns - 1 ||
+        return  point.y < 1 ||
+                point.y > this.platform.rows - 2 ||
+                point.x < 1 ||
+                point.x > this.platform.columns - 2 ||
                 this.platform.walls.contains( new Point( Math.floor( point.x ), Math.floor( point.y ) ) ) ||
                 this.platform.walls.contains( new Point( Math.floor( point.x ), Math.ceil( point.y ) ) ) ||
                 this.platform.walls.contains( new Point( Math.ceil( point.x ), Math.floor( point.y ) ) ) ||
@@ -113,9 +116,14 @@ function Pacman( position ){
     
     // Captures keydown event
     var that = this;
+    this.lastkeydown = new Date().getTime();
     window.onkeydown = function( e ){
         if( [ 37, 38, 39, 40 ].contains( e.which ) ){
-            that.nextMove = that.mapToDirection[ e.which ];
+            var nextMove = that.mapToDirection[ e.which ];
+            if( nextMove == that.direction ){
+                return;
+            }
+            that.nextMove = nextMove;
         }
     }
     setTimeout( function(){
