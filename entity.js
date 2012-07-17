@@ -4,7 +4,7 @@ function Entity( position ){
     this.icon.src = "http://www.google.com/logos/pacman10-hp-sprite-2.png";
     this.direction = "";
     this.nextMove = "";
-    this.speed = 3.5; //steps / sec
+    this.speed = 4.5; //steps / sec
 }
 
 
@@ -34,14 +34,19 @@ Entity.prototype = {
                 this.DirectionToVector[ this.nextMove ]
             );
             if( !this.collides( testpos ) ){
-                this.position = this.position.round( 0.3 );
+                this.position = this.position.round( 0.5 );
                 this.direction = this.nextMove;
+                // forcing the entity to change it's direction before next icon update
+                this.icon.spritePosition = this.states[ this.direction ][ this.icon.state ];
                 this.nextMove = '';
             }
         }
         var newpos = this.position.add( 
             this.DirectionToVector[ this.direction ].scale( this.speed * this.platform.datediff / 1000 )
         );
+        newpos = newpos.x < -1 ? new Point( this.platform.columns, newpos.y ) : newpos;
+        newpos = newpos.x > this.platform.columns ? new Point( -1, newpos.y ) : newpos;
+
         if( this.collides( newpos ) ){
             this.position = this.position.round( 0.5 );
         }
@@ -56,14 +61,20 @@ Entity.prototype = {
         this.platform.ctx.drawImage( this.icon, p[ 0 ], p[ 1 ], s[ 0 ], s[ 1 ], g.x, g.y, platform.step, platform.step );
     },
     collides: function( point ){
-        return  point.y < 1 ||
-                point.y > this.platform.rows - 2 ||
-                point.x < 1 ||
-                point.x > this.platform.columns - 2 ||
-                this.platform.walls.contains( new Point( Math.floor( point.x ), Math.floor( point.y ) ) ) ||
-                this.platform.walls.contains( new Point( Math.floor( point.x ), Math.ceil( point.y ) ) ) ||
-                this.platform.walls.contains( new Point( Math.ceil( point.x ), Math.floor( point.y ) ) ) ||
-                this.platform.walls.contains( new Point( Math.ceil( point.x ), Math.ceil( point.y ) ) );
+        var ret =   !( point.y == 14 && point.x <= 1 ) &&
+                    !( point.y == 14 && point.x >= this.platform.columns - 2 ) &&
+                    (
+                        point.y < 1 ||
+                        point.y > this.platform.rows - 2 ||
+                        point.x < 1 ||
+                        point.x > this.platform.columns - 2 ||
+                        this.platform.walls.contains( new Point( Math.floor( point.x ), Math.floor( point.y ) ) ) ||
+                        this.platform.walls.contains( new Point( Math.floor( point.x ), Math.ceil( point.y ) ) ) ||
+                        this.platform.walls.contains( new Point( Math.ceil( point.x ), Math.floor( point.y ) ) ) ||
+                        this.platform.walls.contains( new Point( Math.ceil( point.x ), Math.ceil( point.y ) ) )
+                    );
+
+        return ret;
     },
 }
 

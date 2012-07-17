@@ -137,12 +137,15 @@ Point.prototype = {
         return  this.x >= 0 && this.x < limit.x &&
                 this.y >= 0 && this.y < limit.y;
     },
+    length: function(){
+        return Math.sqrt( this.x * this.x + this.y * this.y );
+    },
     round: function( e ){
         var p = new Point( this.x, this.y );
-        if( Math.abs( this.x - Math.round( this.x ) ) < e ){
+        if( Math.abs( this.x - Math.round( this.x ) ) <= e ){
             p.x = Math.round( this.x );
         }
-        if( Math.abs( this.y - Math.round( this.y ) ) < e ){
+        if( Math.abs( this.y - Math.round( this.y ) ) <= e ){
             p.y = Math.round( this.y );
         }
         return p;

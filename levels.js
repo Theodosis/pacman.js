@@ -497,6 +497,8 @@ var levels = {
             new Point( 10, 12 ),
             new Point( 11, 12 ),
             new Point( 12, 12 ),
+            new Point( 13, 12 ),
+            new Point( 14, 12 ),
             new Point( 15, 12 ),
             new Point( 16, 12 ),
             new Point( 17, 12 ),
