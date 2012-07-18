@@ -1,24 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <style>
-            body{
-                margin: 0;
-                background: black;
-            }
-           
-            canvas{
-                display: block;
-                margin: auto;
-            }
-        </style>
+        <title>Pacman</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
     </head>
     <body>
         <canvas id="canvas"></canvas>
-        <script src="helper.js"></script>
-        <script src="levels.js"></script>
-        <script src="platform.js"></script>
-        <script src="entity.js"></script>
+        <script src="js/helper.js"></script>
+        <script src="js/audio.js"></script>
+        <script src="js/directions.js"></script>
+        <script src="js/levels.js"></script>
+        <script src="js/platform.js"></script>
+        <script src="js/entity.js"></script>
         <script>
             var platform = new Platform( 28, 31 );
             

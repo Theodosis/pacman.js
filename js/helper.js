@@ -162,4 +162,3 @@ Vector.prototype = {
     constructor: Vector
 }
 Vector.extend( Point );
-

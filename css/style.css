@@ -1,0 +1,20 @@
+@font-face {
+    font-family: "CrackMan";
+    src: url('../fonts/CrackMan.TTF') format('truetype');
+}
+@font-face {
+    font-family: "Joystix";
+    src: url('../fonts/Joystix.TTF') format('truetype');
+}
+body{
+    font-family: "CrackMan";
+    margin: 0;
+    background: black;
+}
+
+canvas{
+    font-family: "Joystix";
+    display: block;
+    margin: auto;
+    padding: 10px;
+}
