@@ -38,14 +38,6 @@ Entity.prototype = {
         var g = this.position.scale( this.platform.step );
         var p = this.icon.spritePosition;
         var s = this.icon.size;
-        if( this.platform.bullets.remove( this.position.round( 0.5 ) ) ){
-            AudioPlayer.consume();
-            this.platform.score += 10;
-        }
-        if( this.platform.energizers.remove( this.position.round( 0.5 ) ) ){
-            this.platform.energize();
-            this.platform.score += 50;
-        }
         this.platform.ctx.drawImage( this.icon, p[ 0 ], p[ 1 ], s[ 0 ], s[ 1 ], g.x - 5, g.y - 5, platform.step + 10, platform.step + 10 );
     },
     collides: function( point ){
@@ -69,38 +61,7 @@ Entity.prototype = {
 function Pacman( position ){
     Entity.call( this, position );
     
-    this.states = {
-        '':  [
-            [ 42, 2 ],
-            [ 2,  2 ],
-            [ 22, 2 ],
-            [ 2,  2 ]
-        ],
-        'W': [ 
-            [ 42, 2 ],
-            [ 2,  2 ],
-            [ 22, 2 ],
-            [ 2,  2 ]
-        ],
-        'E': [
-            [ 42, 2 ],
-            [ 2,  22 ],
-            [ 22, 22 ],
-            [ 2,  22 ]
-        ],
-        'N': [
-            [ 42, 2 ],
-            [ 2,  42 ],
-            [ 22, 42 ],
-            [ 2,  42 ]
-        ],
-        'S': [
-            [ 42, 2 ],
-            [ 2,  62 ],
-            [ 22, 61 ],
-            [ 2,  62 ]
-        ]
-    };
+    this.states = pacman.states;
     this.icon.spritePosition = this.states.W[ 0 ];
     this.icon.state = 0;
     this.icon.size = [ 16, 16 ];
@@ -115,9 +76,23 @@ function Pacman( position ){
     
     // Captures keydown event
 }
+
 Pacman.prototype = {
-    constructor: Pacman
+    constructor: Pacman,
+    drawFrame: function(){
+        this.Entity_drawFrame();
+
+        if( this.platform.bullets.remove( this.position.round( 0.5 ) ) ){
+            AudioPlayer.consume();
+            this.platform.score += 10;
+        }
+        if( this.platform.energizers.remove( this.position.round( 0.5 ) ) ){
+            this.platform.energize();
+            this.platform.score += 50;
+        }
+    }
 }
+
 Pacman.extend( Entity );
 
 

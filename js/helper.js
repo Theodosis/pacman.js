@@ -47,8 +47,11 @@ Object.defineProperty( Function.prototype, "extend", {
                  */
                 var propertyDescriptor = Object.getOwnPropertyDescriptor( parent.prototype, method );
                 if ( propertyDescriptor !== null ) {
+                    console.log( method );
+                    console.log( this.prototype );
                     if ( this.prototype.hasOwnProperty( method ) ) {
-                        Object.defineProperty( this.prototype, parent.name + '_' + method, propertyDescriptor  );
+                        console.log( method );
+                        Object.defineProperty( this.prototype, parent.name + '_' + method, propertyDescriptor );
                     }
                     else {
                         Object.defineProperty( this.prototype, method, propertyDescriptor );

@@ -134,7 +134,7 @@ Platform.prototype = {
         } );
     },
     Initialize: function(){
-        AudioPlayer.Initialize();
+        //AudioPlayer.Initialize();
         this.drawFrame();
         var that = this;
         setTimeout( function(){

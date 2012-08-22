@@ -1,6 +1,7 @@
 var AudioPlayer = {
     sounds: {},
     consume: function(){
+        return;
         this.sounds.consume.play();
         clearTimeout( this.consumetimer );
         this.consumetimer = setTimeout( function(){
@@ -14,10 +15,12 @@ var AudioPlayer = {
 
         this.sounds.consume = new Audio();
         this.sounds.consume.setAttribute( 'src', 'sounds/pacman_chomp.wav' );
-        setInterval( function(){
-            if( AudioPlayer.sounds.consume.currentTime >= 0.35 ){
-                AudioPlayer.sounds.consume.currentTime = 0;
-            }
-        }, 50 );
+        this.sounds.consume.repeat = true;
+
+        this.sounds.siren = new Audio();
+        this.sounds.siren.setAttribute( 'src', 'sounds/Pacman_Siren.mp3' );
+        this.sounds.siren.repeat = true;
+        this.sounds.siren.autoplay = true;
+        this.sounds.siren.loop = true;
     }
 };
