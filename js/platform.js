@@ -22,7 +22,7 @@ function Platform( columns, rows ){
     var stepY = parseInt( window.innerHeight / this.rows );
     
     this.step = stepX < stepY ? stepX : stepY;
-    this.step-=2;
+    this.step-=1;
     this.canvas.width = this.columns * this.step;
     this.canvas.height = this.rows * this.step + 2 * this.rows;
     
@@ -121,7 +121,7 @@ Platform.prototype = {
         var stepX = parseInt( window.innerWidth / this.columns );
         var stepY = parseInt( window.innerHeight / this.rows );
         this.step = stepX < stepY ? stepX : stepY;
-        this.step-=2;
+        this.step-=1;
         this.canvas.width = this.columns * this.step;
         this.canvas.height = this.rows * this.step + 2 * this.rows;
 

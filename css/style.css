@@ -7,13 +7,36 @@
     src: url('../fonts/Joystix.TTF') format('truetype');
 }
 body{
-    font-family: "CrackMan";
+    font-family: "Joystix";
     margin: 0;
     background: black;
+    overflow: hidden;
 }
 
 canvas{
     font-family: "Joystix";
     display: block;
     margin: auto;
+}
+.fork{
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 149px;
+    height: 149px;
+    background-image: url(/forkme.png);
+}
+.signature{
+    color: white;
+    position: fixed;
+    bottom: 0;
+}
+.cc{
+    height: 15px;
+    width: 80px;
+    background-image: url(http://i.creativecommons.org/l/by/3.0/80x15.png);
+    display: block;
+    position: fixed;
+    bottom: 0;
+    right: 0;
 }
