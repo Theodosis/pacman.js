@@ -1,5 +1,5 @@
 function Blinky( position ){
-    this.states = ghosts.blinky.states;
+    this.normalStates = ghosts.blinky.states;
     Ghost.call( this, position );
 }
 Blinky.prototype = {

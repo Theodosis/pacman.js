@@ -29,6 +29,15 @@ Point.prototype = {
         }
         return p;
     },
+    equals: function( e ){
+        return this.x == e.x && this.y == e.y;
+    },
+    dot: function( e ){
+        var p = new Point( this.x, this.y );
+        p.x *= e.x;
+        p.y *= e.y;
+        return p;
+    },
     toString: function(){
         return "[ " + this.x + ", " + this.y + " ]";
     }

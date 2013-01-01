@@ -1,14 +1,19 @@
 function Platform( columns, rows ){
+    this.lvldata = levels.lvl1;
+
     this.columns = columns;
     this.rows = rows;
-    this.walls = levels.lvl1.walls;
-    this.wallraw = levels.lvl1.raw;
+    this.walls = this.lvldata.walls.slice();
+    this.wallraw = this.lvldata.raw.slice();
     this.bg = new Image();
-    this.bg.src = levels.lvl1.bg;
-    this.bullets = levels.lvl1.bullets;
-    this.energizers = levels.lvl1.energizers;
+    this.bg.src = this.lvldata.bg;
+    this.bullets = this.lvldata.bullets.slice();
+    this.energizers = this.lvldata.energizers.slice();
     this.paused = false;
     this.started = false;
+    this.ended = false;
+    this.energized = false;
+    this.lvl = 0;
     this.score = 0;
     
     this.canvas = document.getElementById( 'canvas' );
@@ -25,6 +30,10 @@ function Platform( columns, rows ){
 
     this.TS = new Date().getTime();
     this.datediff = new Date().getTime() - this.TS;
+    var that = this;
+    window.onblur = function(){
+        that.pause();
+    }
 }
 Platform.prototype = {
     entities: [],
@@ -33,19 +42,19 @@ Platform.prototype = {
         this.entities.push( entity );
     },
     play: function(){
-        console.log( "PLAYYY" );
         var that = this;
-        window.onblur = function(){
-            that.pause();
-        }
         this.started = true;
         this.entities[ 0 ].direction = 'W';
         for( i = 0; i < this.entities.length; ++i ){
             if( !( this.entities[ i ] instanceof Ghost ) ){
                 continue;
             }
+            this.entities[ i ].reset();
             ( function( i ) {
                 setTimeout( function(){
+                    if( !that.started ){
+                        return;
+                    }
                     that.entities[ i ].direction = that.entities[ i ].navigate();
                 }, i * 2000 );
             } ) ( i );
@@ -59,8 +68,43 @@ Platform.prototype = {
         this.datediff = 1;
         this.TS = new Date().getTime();
     },
+    reset: function(){
+        this.started = false;
+        for( var i = 0; i < this.entities.length; ++i ){
+            this.entities[ i ].reset();
+        }
+    },
     energize: function(){
+        var that = this;
+        this.energized = true;
+        this.eatenGhosts = 0;
+        for( var i = 1; i < this.entities.length; ++i ){
+            this.entities[ i ].energize();
+        }
+        clearTimeout( this.energizetm );
+        this.energizetm = setTimeout( function(){
+            for( var i = 1; i < that.entities.length; ++i ){
+                that.entities[ i ].deenergize();
+            }
+            that.energized = false;
+        }, 10000 * Math.exp( - this.lvl / 10 ) );
 
+    },
+    checkState: function(){
+        if( this.bullets.length + this.energizers.length == 0 ){
+            ++this.lvl;
+            for( var i = 0; i < this.entities.length; ++i ){
+                this.entities[ i ].speed *= 1.1;
+                this.entities[ i ].currentSpeed = this.entities[ i ].speed;
+            }
+            this.reset();
+            this.bullets = this.lvldata.bullets.slice();
+            this.energizers = this.lvldata.energizers.slice();
+            var that = this;
+            setTimeout( function(){
+                that.play();
+            }, 1000 );
+        }
     },
     drawMessage: function( message, size, color, font ){
         size = size ? size : '26px';
@@ -113,11 +157,22 @@ Platform.prototype = {
         this.ctx.fillStyle = '#fc0';
         this.ctx.fillText( this.score, 150, ( this.rows + 1 ) * this.step );
 
-        if( this.paused ){
+        var pm = this.entities[ 0 ];
+        for( i = 0; i < pm.lives; ++i ){
+            this.ctx.drawImage( 
+                pm.icon, 
+                pm.states[ 'E' ][ 1 ][ 0 ], pm.states[ 'E' ][ 1 ][ 1 ],
+                pm.icon.size[ 0 ], pm.icon.size[ 1 ],
+                this.step * ( 26 - i * 2 ), this.step * 31,
+                platform.step + 10, platform.step + 10 
+            );
+        }
+
+        if( this.paused || this.ended ){
             this.ctx.fillStyle = "rgba(0,0,0,0.75)";
             this.ctx.fillRect( 0, 0, this.step * this.columns, this.step * this.rows );
             
-            this.drawMessage( 'PAUSED!' );
+            this.drawMessage( this.ended ? 'GAME OVER' : 'PAUSED!', false, this.ended ? '#f00' : false );
             return;
         }
         if( !this.started ){
@@ -126,7 +181,7 @@ Platform.prototype = {
     },
     drawFrame: function(){
         this.drawLevel();
-        if( !this.paused ){
+        if( !this.paused && !this.ended ){
             for( var i in this.entities ){
                 this.entities[ i ].drawFrame();
             }

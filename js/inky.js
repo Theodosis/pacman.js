@@ -1,5 +1,5 @@
 function Inky( position ){
-    this.states = ghosts.inky.states;
+    this.normalStates = ghosts.inky.states;
     Ghost.call( this, position );
 }
 Inky.prototype = {

@@ -2,14 +2,20 @@ function Entity( position ){
     this.initPos = position;
     this.position = position;
     this.icon = new Image();
-    this.icon.src = "http://www.google.com/logos/pacman10-hp-sprite-2.png";
+    this.icon.src = "sprite.png";
     this.direction = "";
     this.nextMove = "";
-    this.speed = 6.5; //steps / sec
+    this.speed = 6; //steps / sec
+    this.currentSpeed = this.speed;
 }
 
 
 Entity.prototype = {
+    reset: function(){
+        this.direction = '';
+        this.nextMove = '';
+        this.position = this.initPos;
+    },
     drawFrame: function(){
         if( !this.dead ){
             if( this.nextMove.length != 0 && this.canMove( this.position, Directions.directionToVector[ this.nextMove ] ) ) {
@@ -21,7 +27,7 @@ Entity.prototype = {
             }
             var newpos = this.move( this.position, 
                 Directions.directionToVector[ this.direction ]
-                    .scale( this.speed * this.platform.datediff / 1000 )
+                    .scale( this.currentSpeed * this.platform.datediff / 1000 )
             );
             
             // instant transport
@@ -38,9 +44,14 @@ Entity.prototype = {
             }
         }
 
-        var g = this.position.scale( this.platform.step );
+        if( this.goal && this.position.round( 0.5 ).equals( this.goal ) ){
+            this.goal = false;
+            this.targetcb();
+        }
         var p = this.icon.spritePosition;
         var s = this.icon.size;
+        var g = this.position.scale( this.platform.step );
+        if( !p ){ console.log( [ g, p, s ] ) }
         this.platform.ctx.drawImage( this.icon, p[ 0 ], p[ 1 ], s[ 0 ], s[ 1 ], g.x - 5, g.y - 5, platform.step + 10, platform.step + 10 );
         return collides;
     },
@@ -71,33 +82,38 @@ Entity.prototype = {
 
         return ret;
     },
+    availableDirections: function(){
+        var dirs = [];
+        var all = [ 'W', 'N', 'E', 'S' ];
+        for( var i in all ){
+            if( 
+                all[ i ] == Directions.oppositeDirection[ this.direction ] || 
+                !this.canMove( this.position, Directions.directionToVector[ all[ i ] ] )
+                //all[ i ] == this.direction
+            ){
+                continue;
+            }
+            dirs.push( all[ i ] );
+        }
+        return dirs;
+    },
+    target: function( point, callback ){
+        this.goal = point;
+        this.targetcb = callback;
+    },
+    navigateTo: function( point ){
+        var available = this.availableDirections();
+        var dp = this.position.negative().add( this.goal );
+        var consistent = [];
+        for( var i = 0; i < available.length; ++i ){
+            var dir = Directions.directionToVector[ available[ i ] ].dot( dp );
+            if( dir.x > 0 || dir.y > 0 ){
+                consistent.push( available[ i ] );
+            }
+        }
+        if( consistent.length ){
+            return consistent[ Math.floor( consistent.length * Math.random() ) ];
+        }
+        return available[ Math.floor( available.length * Math.random() ) ];
+    }
 }
-
-
-
-
-
-
-/*
-function Pinky( position ){
-    this.prototype = new Entity( position );
-    this.icon = new Image();
-    this.icon.src = "pinky.png";
-    this.evaluate = ghostEvaluate;
-}
-Pinky.extend( Entity );
-function Inky( position ){
-    this.prototype = new Entity( position );
-    this.icon = new Image();
-    this.icon.src = "inky.png";
-    this.evaluate = ghostEvaluate;
-}
-Inky.extend( Entity );
-function Clyde( position ){
-    this.prototype = new Entity( position );
-    this.icon = new Image();
-    this.icon.src = "clyde.png";
-    this.evaluate = ghostEvaluate;
-}
-Clyde.extend( Entity );
-*/
