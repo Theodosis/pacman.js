@@ -11,11 +11,18 @@ Directions = {
         39: "E",
         40: "S"
     },
-    DirectionToVector: {
+    directionToVector: {
         "":  new Vector( 0, 0 ),
         "W": new Vector( -1, 0 ),
         "N": new Vector( 0, -1 ),
         "E": new Vector( 1, 0 ),
         "S": new Vector( 0, 1 )
+    },
+    oppositeDirection: {
+        '': '',
+        'W': 'E',
+        'N': 'S',
+        'E': 'W',
+        'S': 'N'
     }
 }

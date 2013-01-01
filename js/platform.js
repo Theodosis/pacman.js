@@ -2,6 +2,7 @@ function Platform( columns, rows ){
     this.columns = columns;
     this.rows = rows;
     this.walls = levels.lvl1.walls;
+    this.wallraw = levels.lvl1.raw;
     this.bg = new Image();
     this.bg.src = levels.lvl1.bg;
     this.bullets = levels.lvl1.bullets;
@@ -12,14 +13,13 @@ function Platform( columns, rows ){
     
     this.canvas = document.getElementById( 'canvas' );
     
-    var stepX = parseInt( window.innerWidth / columns );
-    var stepY = parseInt( window.innerHeight / rows );
+    var stepX = parseInt( window.innerWidth / this.columns );
+    var stepY = parseInt( window.innerHeight / this.rows );
     
     this.step = stepX < stepY ? stepX : stepY;
-    this.step = 20;
-    
-    this.canvas.width = columns * this.step + 10;
-    this.canvas.height = rows * this.step + 100;
+    this.step-=2;
+    this.canvas.width = this.columns * this.step;
+    this.canvas.height = this.rows * this.step + 2 * this.rows;
     
     this.ctx = this.canvas.getContext( '2d' );
 
@@ -33,24 +33,23 @@ Platform.prototype = {
         this.entities.push( entity );
     },
     play: function(){
+        console.log( "PLAYYY" );
         var that = this;
-        window.onkeydown = function( e ){
-            if( [ 37, 38, 39, 40 ].contains( e.which ) ){
-                var nextMove = Directions.mapToDirection[ e.which ];
-                if( nextMove == that.entities[ 0 ].direction ){
-                    return;
-                }
-                that.entities[ 0 ].nextMove = nextMove;
-            }
-            if( e.which == 80 ){
-                !that.paused ? that.pause() : that.resume();
-            }
-        }
         window.onblur = function(){
             that.pause();
         }
         this.started = true;
         this.entities[ 0 ].direction = 'W';
+        for( i = 0; i < this.entities.length; ++i ){
+            if( !( this.entities[ i ] instanceof Ghost ) ){
+                continue;
+            }
+            ( function( i ) {
+                setTimeout( function(){
+                    that.entities[ i ].direction = that.entities[ i ].navigate();
+                }, i * 2000 );
+            } ) ( i );
+        }
     },
     pause: function(){
         this.paused = true;
@@ -75,19 +74,24 @@ Platform.prototype = {
         this.ctx.fillText( message, this.columns * this.step / 2, 17 * this.step );
     },
     drawLevel: function(){
+        var stepX = parseInt( window.innerWidth / this.columns );
+        var stepY = parseInt( window.innerHeight / this.rows );
+        this.step = stepX < stepY ? stepX : stepY;
+        this.step-=2;
+        this.canvas.width = this.columns * this.step;
+        this.canvas.height = this.rows * this.step + 2 * this.rows;
+
         this.ctx.fillStyle = "black";
         this.ctx.fillRect( 0, 0, this.canvas.width, this.canvas.height );
         this.ctx.fill();
 
-        /*
-        this.ctx.fillStyle = "#111";
+        this.ctx.fillStyle = "#113";
         for( var i in this.walls ){
             var x = this.walls[ i ].x;
             var y = this.walls[ i ].y;
-            this.ctx.fillRect( x * this.step + 1, y * this.step + 1, this.step - 1, this.step - 1 );
+            this.ctx.fillRect( x * this.step + 1, y * this.step + 1, this.step-1, this.step -1 );
         }
-        */
-        this.ctx.drawImage( this.bg, 52, 42, 385, 425, 0, 0, this.columns * this.step, this.rows * this.step );
+        //this.ctx.drawImage( this.bg, 52, 42, 385, 425, 0, 0, this.columns * this.step, this.rows * this.step );
 
         this.ctx.fillStyle = "#ccc";
         for( var i in this.bullets ){
@@ -114,6 +118,7 @@ Platform.prototype = {
             this.ctx.fillRect( 0, 0, this.step * this.columns, this.step * this.rows );
             
             this.drawMessage( 'PAUSED!' );
+            return;
         }
         if( !this.started ){
             this.drawMessage( 'GET READY!' );
@@ -134,7 +139,7 @@ Platform.prototype = {
         } );
     },
     Initialize: function(){
-        //AudioPlayer.Initialize();
+        AudioPlayer.Initialize();
         this.drawFrame();
         var that = this;
         setTimeout( function(){

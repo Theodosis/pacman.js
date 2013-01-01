@@ -7,21 +7,30 @@
     <body>
         <canvas id="canvas"></canvas>
         <script src="js/helper.js"></script>
+        <script src="js/math.js"></script>
         <script src="js/audio.js"></script>
         <script src="js/directions.js"></script>
         <script src="js/data/levels.js"></script>
         <script src="js/data/pacman.js"></script>
+        <script src="js/data/ghosts.js"></script>
         <script src="js/platform.js"></script>
         <script src="js/entity.js"></script>
+        <script src="js/pacman.js"></script>
+        <script src="js/ghost.js"></script>
+        <script src="js/blinky.js"></script>
+        <script src="js/pinky.js"></script>
+        <script src="js/inky.js"></script>
+        <script src="js/clyde.js"></script>
+
         <script>
             var platform = new Platform( 28, 31 );
             
             platform.addEntity( new Pacman( new Point( 13.5, 23 ) ) );
             
-            //platform.addEntity( new Blinky( new Point( 28, 30 ) ) );
-            //platform.addEntity( new Pinky( new Point( 29, 30 ) ) );
-            //platform.addEntity( new Inky( new Point( 30, 30 ) ) );
-            //platform.addEntity( new Clyde( new Point( 31, 30 ) ) );
+            platform.addEntity( new Blinky( new Point( 10, 11 ) ) );
+            platform.addEntity( new Pinky( new Point( 12, 11 ) ) );
+            platform.addEntity( new Inky( new Point( 15, 11 ) ) );
+            platform.addEntity( new Clyde( new Point( 17, 11 ) ) );
             
             platform.Initialize();
         </script>
