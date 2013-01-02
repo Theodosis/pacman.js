@@ -1,6 +1,6 @@
 Pacman.js 
 =========
-Pacman.js is the [well-known game](http://en.wikipedia.org/wiki/Pac-Man), written in JavaScript. 
+Pacman.js is the [well-known game](http://en.wikipedia.org/wiki/Pac-Man), written in JavaScript and html5. 
 
 Controls
 --------
