@@ -1,7 +1,0 @@
-pacman.js is the well-known game, written in JS. 
-Controls: arrows for direction, P for pause.
-TODO:
-   touch enabled
-   wasd controls
-   more sounds
-   ghost navigation strategy (currently random)
