@@ -10,6 +10,7 @@ function Ghost( position ){
     this.energized = false;
     this.ghost = false;
     this.goal = false;
+    this.speed = 4.2;
 
     var that = this;
     setInterval( function(){
@@ -52,11 +53,11 @@ Ghost.prototype = {
         this.states = this.normalStates;
     },
     navigate: function(){
-        if( this.goal ){
-            return this.navigateTo( this.goal );
+        if( this.isIntersection() ){
+            return this.navigateTo( this.platform.entities[ 0 ].position );
         }
         var available = this.availableDirections();
-        return !available ? false : available[ Math.floor( Math.random() * available.length ) ];
+        return !available ? false : available[ 0 ];
     },
     drawFrame: function(){
         this.currentSpeed = this.ghost ? this.speed * 2 : ( this.energized ? this.speed * 0.6 : this.speed );

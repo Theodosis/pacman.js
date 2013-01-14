@@ -17,10 +17,10 @@ var AudioPlayer = {
         this.sounds.consume.setAttribute( 'src', 'sounds/pacman_chomp.wav' );
         this.sounds.consume.repeat = true;
 
-        this.sounds.siren = new Audio();
-        this.sounds.siren.setAttribute( 'src', 'sounds/Pacman_Siren.mp3' );
-        this.sounds.siren.repeat = true;
-        this.sounds.siren.autoplay = true;
-        this.sounds.siren.loop = true;
+        //this.sounds.siren = new Audio();
+        //this.sounds.siren.setAttribute( 'src', 'sounds/Pacman_Siren.mp3' );
+        //this.sounds.siren.repeat = true;
+        //this.sounds.siren.autoplay = true;
+        //this.sounds.siren.loop = true;
     }
 };

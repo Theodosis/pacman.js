@@ -5,7 +5,7 @@ function Entity( position ){
     this.icon.src = "sprite.png";
     this.direction = "";
     this.nextMove = "";
-    this.speed = 6; //steps / sec
+    this.speed = 4; //steps / sec
     this.currentSpeed = this.speed;
 }
 
@@ -88,14 +88,26 @@ Entity.prototype = {
         for( var i in all ){
             if( 
                 all[ i ] == Directions.oppositeDirection[ this.direction ] || 
-                !this.canMove( this.position, Directions.directionToVector[ all[ i ] ] )
-                //all[ i ] == this.direction
+                !this.canMove( this.position, Directions.directionToVector[ all[ i ] ] ) 
             ){
                 continue;
             }
             dirs.push( all[ i ] );
         }
         return dirs;
+    },
+    isIntersection: function(){
+        var dirs = [];
+        var all = [ 'W', 'N', 'E', 'S' ];
+        for( var i in all ){
+            if( 
+                !this.canMove( this.position, Directions.directionToVector[ all[ i ] ] ) 
+            ){
+                continue;
+            }
+            dirs.push( all[ i ] );
+        }
+        return dirs.length > 2;
     },
     target: function( point, callback ){
         this.goal = point;
@@ -114,6 +126,7 @@ Entity.prototype = {
         if( consistent.length ){
             return consistent[ Math.floor( consistent.length * Math.random() ) ];
         }
+        console.log( 'random' );
         return available[ Math.floor( available.length * Math.random() ) ];
     }
 }
