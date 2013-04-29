@@ -34,7 +34,7 @@ canvas{
 .cc{
     height: 15px;
     width: 80px;
-    background-image: url(http://i.creativecommons.org/l/by/3.0/80x15.png);
+    background-image: url(//i.creativecommons.org/l/by/3.0/80x15.png);
     display: block;
     position: fixed;
     bottom: 0;
