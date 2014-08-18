@@ -129,7 +129,7 @@ Platform.prototype = {
         this.ctx.fillRect( 0, 0, this.canvas.width, this.canvas.height );
         this.ctx.fill();
 
-        this.ctx.fillStyle = "#113";
+        this.ctx.fillStyle = "#fff";
         for( var i in this.walls ){
             var x = this.walls[ i ].x;
             var y = this.walls[ i ].y;
