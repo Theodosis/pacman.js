@@ -159,7 +159,7 @@ Platform.prototype = {
         this.ctx.fillText( 'SCORE', 50, ( this.rows + 1 ) * this.step );
         this.ctx.fillStyle = '#fc0';
         this.ctx.fillText( this.score, 150, ( this.rows + 1 ) * this.step );
-        this.ctx.fillText( "LEVEL " + this.lvl, 350, (this.rows + 1) * this.step );
+        this.ctx.fillText( "LEVEL " + ( this.lvl + 1 ), 350, (this.rows + 1) * this.step );
 
         var pm = this.entities[ 0 ];
         for( i = 0; i < pm.lives; ++i ){
