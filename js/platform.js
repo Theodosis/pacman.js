@@ -131,7 +131,7 @@ Platform.prototype = {
 
         this.ctx.fillStyle = [  "#113", "#311", "#131",
                                 "#116", "#611", "#161",
-                                "#339", "#933", "#393", #"990"
+                                "#339", "#933", "#393", "#990"
                             ][ this.lvl % 10 ];
         for( var i in this.walls ){
             var x = this.walls[ i ].x;
