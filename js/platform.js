@@ -138,7 +138,7 @@ Platform.prototype = {
             var y = this.walls[ i ].y;
             this.ctx.fillRect( x * this.step + 1, y * this.step + 1, this.step-1, this.step -1 );
         }
-        this.ctx.drawImage( this.bg, 52, 42, 385, 425, 0, 0, this.columns * this.step, this.rows * this.step );
+        //this.ctx.drawImage( this.bg, 52, 42, 385, 425, 0, 0, this.columns * this.step, this.rows * this.step );
 
         this.ctx.fillStyle = "#ccc";
         for( var i in this.bullets ){
