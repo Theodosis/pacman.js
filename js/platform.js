@@ -129,13 +129,16 @@ Platform.prototype = {
         this.ctx.fillRect( 0, 0, this.canvas.width, this.canvas.height );
         this.ctx.fill();
 
-        this.ctx.fillStyle = "#fff";
+        this.ctx.fillStyle = [  "#113", "#311", "#131",
+                                "#116", "#611", "#161",
+                                "#339", "#933", "#393", #"990"
+                            ][ this.lvl % 10 ];
         for( var i in this.walls ){
             var x = this.walls[ i ].x;
             var y = this.walls[ i ].y;
             this.ctx.fillRect( x * this.step + 1, y * this.step + 1, this.step-1, this.step -1 );
         }
-        //this.ctx.drawImage( this.bg, 52, 42, 385, 425, 0, 0, this.columns * this.step, this.rows * this.step );
+        this.ctx.drawImage( this.bg, 52, 42, 385, 425, 0, 0, this.columns * this.step, this.rows * this.step );
 
         this.ctx.fillStyle = "#ccc";
         for( var i in this.bullets ){
